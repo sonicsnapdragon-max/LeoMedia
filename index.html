@@ -3,12 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Cache Busting Tags to force Instagram to reload fresh code -->
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <title>LukeLeo - Instant Message</title>
     <style>
+        /* Reset and Retro Base Styles */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -18,7 +15,7 @@
         body {
             font-family: "MS Sans Serif", Geneva, sans-serif;
             font-size: 11px;
-            background-color: #55aaaa;
+            background-color: #55aaaa; /* Classic retro desktop teal */
             color: #000000;
             display: flex;
             justify-content: center;
@@ -27,6 +24,7 @@
             padding: 10px;
         }
 
+        /* Classic Win98/AIM Grey Window Framework */
         .aim-window {
             background-color: #d4d0c8;
             border: 2px solid;
@@ -37,6 +35,7 @@
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
         }
 
+        /* Standard Blue Window Title Bar */
         .title-bar {
             background: linear-gradient(90deg, #000080, #1084d0);
             color: #ffffff;
@@ -74,6 +73,7 @@
             cursor: pointer;
         }
 
+        /* AIM Menu Row */
         .menu-bar {
             display: flex;
             gap: 12px;
@@ -82,6 +82,7 @@
             font-size: 11px;
         }
 
+        /* The Classic Yellow/Cream AIM Chat Display Screen */
         .chat-display {
             background-color: #fffff0;
             border: 2px solid;
@@ -95,21 +96,50 @@
         }
 
         .system-msg {
-            color: #ff00ff;
+            color: #ff00ff; /* AIM pink system notification text */
             font-weight: bold;
             margin-bottom: 8px;
         }
 
-        .delayed-line {
-            display: none;
+        /* --- BULLETPROOF HARDWARE-ACCELERATED CSS TIMELINE --- */
+        
+        /* Line 2: Shows up instantly at 1.0s */
+        .line-init {
+            opacity: 0;
             margin-bottom: 8px;
+            animation: stageOne 0s forwards;
+            animation-delay: 1.0s;
         }
 
-        .typing-status {
-            display: none;
+        /* Line 3: Fashes on at 2.0s, vanishes entirely at 3.8s */
+        .line-typing {
+            opacity: 0;
             color: #7f7f7f;
             font-style: italic;
             margin-top: 5px;
+            animation: stageTwo 1.8s forwards;
+            animation-delay: 2.0s;
+        }
+
+        /* Line 4: Final message block completely snaps in at 3.8s */
+        .line-message {
+            opacity: 0;
+            animation: stageThree 0s forwards;
+            animation-delay: 3.8s;
+        }
+
+        @keyframes stageOne {
+            to { opacity: 1; }
+        }
+
+        @keyframes stageTwo {
+            0% { opacity: 1; }
+            99% { opacity: 1; }
+            100% { opacity: 0; height: 0; margin: 0; overflow: hidden; }
+        }
+
+        @keyframes stageThree {
+            to { opacity: 1; }
         }
 
         .buddy-name {
@@ -122,6 +152,7 @@
             font-family: "Arial", sans-serif;
         }
 
+        /* Retro Text Block Formatting Bar Shortcuts */
         .formatting-bar {
             display: flex;
             gap: 2px;
@@ -145,6 +176,7 @@
             cursor: pointer;
         }
 
+        /* Composing / Message Input Box Area */
         .chat-input-area {
             background-color: #ffffff;
             border: 2px solid;
@@ -157,6 +189,7 @@
             font-style: italic;
         }
 
+        /* Bottom AIM Action Button Control Deck */
         .action-deck {
             display: flex;
             justify-content: flex-end;
@@ -181,6 +214,7 @@
             border-color: #ffffff #404040 #404040 #ffffff;
         }
 
+        /* Spinner State inside AIM parameters */
         .spinner {
             display: none;
             width: 12px;
@@ -214,11 +248,18 @@
             <span><u>F</u>ile</span><span><u>E</u>dit</span><span><u>I</u>nsert</span><span><u>P</u>eople</span>
         </div>
         
-        <div class="chat-display" id="chatDisplay">
+        <div class="chat-display">
+            <!-- Line 1: Always visible immediately -->
             <div class="system-msg">*** Warning level: 0% ***</div>
-            <div class="system-msg delayed-line" id="lineInit">*** Online session node successfully initialized. ***</div>
-            <div class="typing-status" id="lineTyping">* LukeLeo is typing...</div>
-            <div class="delayed-line" id="lineMessage">
+            
+            <!-- Line 2: Handled natively via CSS transitions -->
+            <div class="system-msg line-init">*** Online session node successfully initialized. ***</div>
+            
+            <!-- Line 3: Simulated typing sequence handled by CSS -->
+            <div class="typing-status" id="typeNode" class="line-typing">* LukeLeo is typing...</div>
+            
+            <!-- Line 4: Final block presentation -->
+            <div class="line-message">
                 <span class="buddy-name">LukeLeo:</span> 
                 <span class="buddy-text" style="font-weight: bold; color: #ff007f;">hey! standard links keep glitching here. click "Send" below to establish a direct connection to my safe portal directory profile &lt;3</span>
             </div>
@@ -248,37 +289,11 @@
     </div>
 
     <script>
-    // Hardcoded execution block that bypasses standard window events
-    function runAnimationPipeline() {
-        var chat = document.getElementById("chatDisplay");
-        if (!chat) return;
-
-        // Line 1 to Line 2 Transition
-        setTimeout(function() {
-            var lineInit = document.getElementById("lineInit");
-            if(lineInit) lineInit.style.display = "block";
-            chat.scrollTop = chat.scrollHeight;
-        }, 1000);
-
-        // Typing State Activation
-        setTimeout(function() {
-            var lineTyping = document.getElementById("lineTyping");
-            if(lineTyping) lineTyping.style.display = "block";
-            chat.scrollTop = chat.scrollHeight;
-        }, 2000);
-
-        // Message Output Delivery
-        setTimeout(function() {
-            var lineTyping = document.getElementById("lineTyping");
-            var lineMessage = document.getElementById("lineMessage");
-            if(lineTyping) lineTyping.style.display = "none";
-            if(lineMessage) lineMessage.style.display = "block";
-            chat.scrollTop = chat.scrollHeight;
-        }, 3800);
-    }
-
-    // Force run immediately
-    runAnimationPipeline();
+    // Manual animation fallback removal to support absolute browser engines
+    setTimeout(function() {
+        var node = document.getElementById("typeNode");
+        if(node) { node.style.display = "none"; }
+    }, 3800);
 
     function secureRedirect() {
         var btn = document.getElementById("sendBtn");
@@ -286,25 +301,17 @@
         var spinner = document.getElementById("btnSpinner");
         var inputBox = document.getElementById("inputBox");
 
-        if (!btn || btn.style.cursor === "not-allowed") return;
-
-        var lineMessage = document.getElementById("lineMessage");
-        if (!lineMessage || lineMessage.style.display !== "block") return;
+        if (btn.style.cursor === "not-allowed") return;
 
         btn.style.cursor = "not-allowed";
-        if(text) text.style.display = "none";
-        if(spinner) spinner.style.display = "block";
-        if(inputBox) inputBox.innerHTML = "<span style='color: #0000ff; font-weight:bold;'>Sending message block payload...</span>";
+        text.style.display = "none";
+        spinner.style.display = "block";
+        inputBox.innerHTML = "<span style='color: #0000ff; font-weight:bold;'>Sending message block payload...</span>";
 
+        // Double-layered secure obfuscation key back to linktr.ee/LukeLeo
         var primaryPayload = "YUhSMGNITTZMeTlzYVc1cmRISXVaV1V2VEhWclpVeGxidz09"; 
         
         try {
             var resolvedTarget = atob(atob(primaryPayload));
             setTimeout(function() {
-                window.location.href = resolvedTarget;
-            }, 1400); 
-        } catch (err) {
-            console.error("AOL Network Error:", err);
-            if(btn) btn.style.cursor = "pointer";
-            if(text) text.style.display = "block";
-            if(spinner) spinner.style.display = "none";
+
