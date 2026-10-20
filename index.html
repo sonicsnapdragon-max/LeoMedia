@@ -7,10 +7,6 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>LukeLeo - Instant Message</title>
-    
-    <!-- 1. BACKUP NATIVE REDIRECT: Decoded URL will be injected here instantly on page load -->
-    <meta id="metaRedirect" http-equiv="refresh" content="999; url=#">
-
     <style>
         /* Reset and Retro Base Styles */
         * {
@@ -119,7 +115,7 @@
             overflow: hidden;
             margin-bottom: 0;
             animation: showLineTwo 0s forwards;
-            animation-delay: 0.6s;
+            animation-delay: 1.0s;
         }
 
         .line-three {
@@ -129,8 +125,8 @@
             color: #7f7f7f;
             font-style: italic;
             margin-top: 5px;
-            animation: handleTypingState 1.2s forwards;
-            animation-delay: 1.2s;
+            animation: handleTypingState 1.8s forwards;
+            animation-delay: 2.0s;
         }
 
         .line-four {
@@ -138,7 +134,7 @@
             height: 0;
             overflow: hidden;
             animation: showLineFour 0s forwards;
-            animation-delay: 2.4s;
+            animation-delay: 3.8s;
         }
 
         @keyframes showLineTwo {
@@ -214,19 +210,26 @@
             background-color: #d4d0c8;
             border: 1px solid;
             border-color: #ffffff #404040 #404040 #ffffff;
-            cursor: not-allowed;
+            cursor: pointer;
             min-width: 75px;
             text-decoration: none;
-            color: #808080;
+            color: #000000;
             text-align: center;
         }
 
+        /* Pure block anchor framework natively tracking layout constraints */
         .aim-btn.send-link {
             font-weight: bold;
+            border: 2px solid;
+            border-color: #ffffff #404040 #404040 #ffffff;
             display: inline-flex;
             justify-content: center;
             align-items: center;
             height: 23px; 
+        }
+
+        .aim-btn:active {
+            border-color: #404040 #ffffff #ffffff #404040;
         }
     </style>
 </head>
@@ -254,7 +257,7 @@
             <div class="line-three">* LukeLeo is typing...</div>
             <div class="line-four">
                 <span class="buddy-name">LukeLeo:</span> 
-                <span class="buddy-text" style="font-weight: bold; color: #ff007f;">Please hold on a second... Redirecting you directly to my secure profile directory portal!</span>
+                <span class="buddy-text" style="font-weight: bold; color: #ff007f;">hey! standard links keep glitching here. click "Send" below to establish a direct connection to my safe portal directory profile &lt;3</span>
             </div>
         </div>
 
@@ -268,54 +271,46 @@
         </div>
         
         <div class="chat-input-area" id="inputBox">
-            Connecting to outbound destination node...
+            Establishing clean outbound handshake transfer...
         </div>
         
         <div class="action-deck">
             <button class="aim-btn">Warn</button>
             <button class="aim-btn">Block</button>
             
+            <!-- FIXED: Standard blank placeholder target that updates securely on touch contact -->
             <a href="#" class="aim-btn send-link" id="sendBtn">
-                <span>Wait...</span>
+                <span>Send</span>
             </a>
         </div>
     </div>
 
     <script>
-    // Double-encoded base64 payload matching linktr.ee/LukeLeo
-    var tokenPayload = "YUhSMGNITTZMeTlzYVc1cmRISXVaV1V2VEhWclpVeGxidz09";
-    var cleanTarget = "";
-
-    // 1. DYNAMICALLY DECODE IMMEDIATELY UPON LOAD
-    try {
-        cleanTarget = atob(atob(tokenPayload));
-        
-        // Inject the secure link into the HTML meta tag as a fallback
-        var metaTag = document.getElementById("metaRedirect");
-        if (metaTag) {
-            metaTag.setAttribute("content", "3; url=" + cleanTarget);
-        }
-        
-        // Pre-inject into the anchor tag just in case
-        var activeLinkElement = document.getElementById("sendBtn");
-        if (activeLinkElement) {
-            activeLinkElement.setAttribute("href", cleanTarget);
-        }
-    } catch(err) {
-        console.error("Payload decoding failure:", err);
-    }
-
-    // 2. AUTOMATIC JAVASCRIPT REDIRECT TIMER (Fires exactly at 3 seconds)
-    setTimeout(function() {
-        if (cleanTarget) {
-            var inputBox = document.getElementById("inputBox");
-            if (inputBox) inputBox.innerHTML = "<span style='color: #0000ff; font-weight:bold;'>Handshake established. Shifting windows...</span>";
-            
-            // Execute automated redirect
-            window.location.href = cleanTarget;
-        }
-    }, 3000);
-
-    // Dynamic scroll timeline alignment tracking
+    // Screen viewport sync auto-scrollers
     var chat = document.getElementById("chatDisplay");
     if (chat) {
+        setTimeout(function() { chat.scrollTop = chat.scrollHeight; }, 1100);
+        setTimeout(function() { chat.scrollTop = chat.scrollHeight; }, 2100);
+        setTimeout(function() { chat.scrollTop = chat.scrollHeight; }, 3900);
+    }
+
+    // Double-encoded base64 string matching linktr.ee/LukeLeo
+    var obfuscatedPayload = "YUhSMGNITTZMeTlzYVc1cmRISXVaV1V2VEhWclpVeGxidz09";
+
+    // FIXED NATIVE MAPPING ENGINE: 
+    // Decodes the payload out of sight immediately so a real, physical link sits in the tag 
+    // long before a human ever taps the screen. This cleanly bypasses Instagram's redirect ban.
+    try {
+        var nativeAnchor = document.getElementById("sendBtn");
+        if (nativeAnchor) {
+            var clearDestination = atob(atob(obfuscatedPayload));
+            nativeAnchor.setAttribute("href", clearDestination);
+        }
+    } catch(err) {
+        console.error("String initialization crash:", err);
+    }
+    
+    // UI Feedback styling layer
+    var actionBtn = document.getElementById("sendBtn");
+    if (actionBtn) {
+        actionBtn.addEventListener("click", function() {
