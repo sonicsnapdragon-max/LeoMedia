@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     <title>LukeLeo - Instant Message</title>
     <style>
         /* Reset and Retro Base Styles */
@@ -18,7 +15,7 @@
         body {
             font-family: "MS Sans Serif", Geneva, sans-serif;
             font-size: 11px;
-            background-color: #55aaaa; /* Retro desktop teal */
+            background-color: #55aaaa; /* Classic retro desktop teal */
             color: #000000;
             display: flex;
             justify-content: center;
@@ -27,7 +24,7 @@
             padding: 10px;
         }
 
-        /* Win98/AIM Grey Window Chassis */
+        /* Classic Win98/AIM Grey Window Framework */
         .aim-window {
             background-color: #d4d0c8;
             border: 2px solid;
@@ -38,7 +35,7 @@
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
         }
 
-        /* Blue Window Title Bar */
+        /* Standard Blue Window Title Bar */
         .title-bar {
             background: linear-gradient(90deg, #000080, #1084d0);
             color: #ffffff;
@@ -76,6 +73,7 @@
             cursor: pointer;
         }
 
+        /* AIM Menu Row */
         .menu-bar {
             display: flex;
             gap: 12px;
@@ -83,8 +81,10 @@
             border-bottom: 1px solid #808080;
             font-size: 11px;
         }
+        .menu-bar span { cursor: pointer; }
+        .menu-bar span::first-letter { text-decoration: underline; }
 
-        /* Yellow/Cream Chat Display Screen */
+        /* The Classic Yellow/Cream AIM Chat Display Screen */
         .chat-display {
             background-color: #fffff0;
             border: 2px solid;
@@ -98,69 +98,22 @@
         }
 
         .system-msg {
-            color: #ff00ff; /* AIM pink system notification */
+            color: #ff00ff; /* AIM pink system notification text */
             font-weight: bold;
             margin-bottom: 8px;
         }
 
-        /* --- HARDWARE-ACCELERATED TIMELINE --- */
-        .line-one {
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .line-two {
-            opacity: 0;
-            height: 0;
-            overflow: hidden;
-            margin-bottom: 0;
-            animation: showLineTwo 0s forwards;
-            animation-delay: 1.0s;
-        }
-
-        .line-three {
-            opacity: 0;
-            height: 0;
-            overflow: hidden;
-            color: #7f7f7f;
-            font-style: italic;
-            margin-top: 5px;
-            animation: handleTypingState 1.8s forwards;
-            animation-delay: 2.0s;
-        }
-
-        .line-four {
-            opacity: 0;
-            height: 0;
-            overflow: hidden;
-            animation: showLineFour 0s forwards;
-            animation-delay: 3.8s;
-        }
-
-        @keyframes showLineTwo {
-            to { opacity: 1; height: auto; margin-bottom: 8px; }
-        }
-
-        @keyframes handleTypingState {
-            0% { opacity: 1; height: auto; margin-bottom: 8px; }
-            99% { opacity: 1; height: auto; margin-bottom: 8px; }
-            100% { opacity: 0; height: 0; margin-bottom: 0; visibility: hidden; }
-        }
-
-        @keyframes showLineFour {
-            to { opacity: 1; height: auto; }
-        }
-
         .buddy-name {
-            color: #ff0000;
+            color: #ff0000; /* Bold Red for incoming sender name */
             font-weight: bold;
         }
 
         .buddy-text {
-            color: #0000ff;
+            color: #0000ff; /* Classic default blue message text */
             font-family: "Arial", sans-serif;
         }
 
+        /* Retro Text Block Formatting Bar Shortcuts */
         .formatting-bar {
             display: flex;
             gap: 2px;
@@ -184,6 +137,7 @@
             cursor: pointer;
         }
 
+        /* Composing / Message Input Box Area */
         .chat-input-area {
             background-color: #ffffff;
             border: 2px solid;
@@ -196,6 +150,7 @@
             font-style: italic;
         }
 
+        /* Bottom AIM Action Button Control Deck */
         .action-deck {
             display: flex;
             justify-content: flex-end;
@@ -212,29 +167,38 @@
             border-color: #ffffff #404040 #404040 #ffffff;
             cursor: pointer;
             min-width: 75px;
-            text-decoration: none;
-            color: #000000;
-            text-align: center;
-        }
-
-        /* Pure block anchor framework natively tracking layout constraints */
-        .aim-btn.send-link {
-            font-weight: bold;
-            border: 2px solid;
-            border-color: #ffffff #404040 #404040 #ffffff;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            height: 23px; 
         }
 
         .aim-btn:active {
             border-color: #404040 #ffffff #ffffff #404040;
+            padding: 5px 14px 3px 16px;
+        }
+
+        .aim-btn.send-btn {
+            font-weight: bold;
+            border: 2px solid;
+            border-color: #ffffff #404040 #404040 #ffffff;
+        }
+
+        /* Spinner State inside AIM parameters */
+        .spinner {
+            display: none;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #404040;
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
 
+    <!-- AIM OS Application frame -->
     <div class="aim-window">
         <div class="title-bar">
             <div class="title-text">
@@ -251,16 +215,17 @@
             <span><u>F</u>ile</span><span><u>E</u>dit</span><span><u>I</u>nsert</span><span><u>P</u>eople</span>
         </div>
         
-        <div class="chat-display" id="chatDisplay">
-            <div class="system-msg line-one">*** Warning level: 0% ***</div>
-            <div class="system-msg line-two">*** Online session node successfully initialized. ***</div>
-            <div class="line-three">* LukeLeo is typing...</div>
-            <div class="line-four">
+        <!-- Live Chat Message Field Log -->
+        <div class="chat-display">
+            <div class="system-msg">*** Warning level: 69% ***</div>
+            <div class="system-msg">*** Online session node successfully initialized. ***</div>
+            <p style="margin-bottom: 6px;">
                 <span class="buddy-name">LukeLeo:</span> 
-                <span class="buddy-text" style="font-weight: bold; color: #ff007f;">hey! standard links keep glitching here. click "Send" below to establish a direct connection to my safe portal directory profile &lt;3</span>
-            </div>
+                <span class="buddy-text" style="font-weight: bold; color: #ff007f;">hey cutie! ;) to access the directory safely and bypass automated platform crawling bugs (those things that get you banned), please click/tap continue to be redirected to my LinkTr.ee &lt;3</span>
+            </p>
         </div>
 
+        <!-- Classic Rich Text Font Customizer row -->
         <div class="formatting-bar">
             <div class="format-tool" style="color: blue;">A</div>
             <div class="format-tool" style="background: linear-gradient(to right, red, blue); width:14px;"></div>
@@ -270,47 +235,57 @@
             <div class="format-tool" style="font-size:8px;">link</div>
         </div>
         
+        <!-- Bottom Input Frame Box mimicking typing window -->
         <div class="chat-input-area" id="inputBox">
             Establishing clean outbound handshake transfer...
         </div>
         
+        <!-- AIM Button Control tray alignment -->
         <div class="action-deck">
             <button class="aim-btn">Warn</button>
             <button class="aim-btn">Block</button>
-            
-            <!-- FIXED: Standard blank placeholder target that updates securely on touch contact -->
-            <a href="#" class="aim-btn send-link" id="sendBtn">
-                <span>Send</span>
-            </a>
+            <button class="aim-btn send-btn" id="sendBtn" onclick="secureRedirect()">
+                <span id="btnText">Continue</span>
+                <center><div id="btnSpinner" class="spinner"></div></center>
+            </button>
         </div>
     </div>
 
     <script>
-    // Screen viewport sync auto-scrollers
-    var chat = document.getElementById("chatDisplay");
-    if (chat) {
-        setTimeout(function() { chat.scrollTop = chat.scrollHeight; }, 1100);
-        setTimeout(function() { chat.scrollTop = chat.scrollHeight; }, 2100);
-        setTimeout(function() { chat.scrollTop = chat.scrollHeight; }, 3900);
-    }
+    function secureRedirect() {
+        var btn = document.getElementById("sendBtn");
+        var text = document.getElementById("btnText");
+        var spinner = document.getElementById("btnSpinner");
+        var inputBox = document.getElementById("inputBox");
 
-    // Double-encoded base64 string matching linktr.ee/LukeLeo
-    var obfuscatedPayload = "YUhSMGNITTZMeTlzYVc1cmRISXVaV1V2VEhWclpVeGxidz09";
+        if (btn.style.cursor === "not-allowed") return;
 
-    // FIXED NATIVE MAPPING ENGINE: 
-    // Decodes the payload out of sight immediately so a real, physical link sits in the tag 
-    // long before a human ever taps the screen. This cleanly bypasses Instagram's redirect ban.
-    try {
-        var nativeAnchor = document.getElementById("sendBtn");
-        if (nativeAnchor) {
-            var clearDestination = atob(atob(obfuscatedPayload));
-            nativeAnchor.setAttribute("href", clearDestination);
+        // 1. Lock UI buttons & display vintage computing step loading state
+        btn.style.cursor = "not-allowed";
+        text.style.display = "none";
+        spinner.style.display = "block";
+        inputBox.innerHTML = "<span style='color: #0000ff; font-weight:bold;'>Onward, homosexual!...</span>";
+
+        // 2. Verified, double-layered base64 payload tracking directly to linktr.ee/LukeLeo
+        var primaryPayload = "YUhSMGNITTZMeTlzYVc1cmRISXVaV1V2VEhWclpVeGxidz09"; 
+        
+        try {
+            // 3. Process the nested layout decoding cycle
+            var resolvedTarget = atob(atob(primaryPayload));
+            
+            // 4. Mimic early dial-up / lag delivery pipeline time window
+            setTimeout(function() {
+                window.location.href = resolvedTarget;
+            }, 1400); 
+        } catch (err) {
+            console.error("AOL Network Error:", err);
+            btn.style.cursor = "pointer";
+            text.style.display = "block";
+            spinner.style.display = "none";
+            inputBox.innerText = "Connection failed. Please retry.";
         }
-    } catch(err) {
-        console.error("String initialization crash:", err);
     }
-    
-    // UI Feedback styling layer
-    var actionBtn = document.getElementById("sendBtn");
-    if (actionBtn) {
-        actionBtn.addEventListener("click", function() {
+</script>
+
+</body>
+</html>
