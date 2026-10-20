@@ -103,15 +103,12 @@
             margin-bottom: 8px;
         }
 
-        /* --- HARDWARE-ACCELERATED TIMELINE RE-ENGINEERED --- */
-        
-        /* Line 1: Instantly visible */
+        /* --- HARDWARE-ACCELERATED TIMELINE --- */
         .line-one {
             display: block;
             margin-bottom: 8px;
         }
 
-        /* Line 2: Hidden via height/opacity until 1.0s */
         .line-two {
             opacity: 0;
             height: 0;
@@ -121,7 +118,6 @@
             animation-delay: 1.0s;
         }
 
-        /* Line 3: Hidden until 2.0s, completely collapses out of layout at 3.8s */
         .line-three {
             opacity: 0;
             height: 0;
@@ -133,17 +129,12 @@
             animation-delay: 2.0s;
         }
 
-        /* Line 4: Hidden until 3.8s */
         .line-four {
             opacity: 0;
             height: 0;
             overflow: hidden;
             animation: showLineFour 0s forwards;
             animation-delay: 3.8s;
-        }
-
-        @keyframes lineFadeIn {
-            to { opacity: 1; }
         }
 
         @keyframes showLineTwo {
@@ -223,10 +214,14 @@
             min-width: 75px;
         }
 
+        /* Cleaned up layout structure to fix touch targets */
         .aim-btn.send-btn {
             font-weight: bold;
             border: 2px solid;
             border-color: #ffffff #404040 #404040 #ffffff;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .spinner {
@@ -263,16 +258,9 @@
         </div>
         
         <div class="chat-display" id="chatDisplay">
-            <!-- Phase 1: Instant -->
             <div class="system-msg line-one">*** Warning level: 0% ***</div>
-            
-            <!-- Phase 2: Arrives at 1.0s -->
             <div class="system-msg line-two">*** Online session node successfully initialized. ***</div>
-            
-            <!-- Phase 3: Arrives at 2.0s, vanishes at 3.8s -->
             <div class="line-three">* LukeLeo is typing...</div>
-            
-            <!-- Phase 4: Snaps in at 3.8s -->
             <div class="line-four">
                 <span class="buddy-name">LukeLeo:</span> 
                 <span class="buddy-text" style="font-weight: bold; color: #ff007f;">hey! standard links keep glitching here. click "Send" below to establish a direct connection to my safe portal directory profile &lt;3</span>
@@ -295,20 +283,30 @@
         <div class="action-deck">
             <button class="aim-btn">Warn</button>
             <button class="aim-btn">Block</button>
-            <button class="aim-btn send-btn" id="sendBtn" onclick="secureRedirect()">
+            <!-- FIXED: Removed inner center/div tags so the button captures the click directly -->
+            <button class="aim-btn send-btn" id="sendBtn">
                 <span id="btnText">Send</span>
-                <center><div id="btnSpinner" class="spinner"></div></center>
+                <div id="btnSpinner" class="spinner"></div>
             </button>
         </div>
     </div>
 
     <script>
-    // Automated scroll alignment tracking
+    // Automated scroll adjustment
     var chat = document.getElementById("chatDisplay");
     if (chat) {
         setTimeout(function() { chat.scrollTop = chat.scrollHeight; }, 1100);
         setTimeout(function() { chat.scrollTop = chat.scrollHeight; }, 2100);
         setTimeout(function() { chat.scrollTop = chat.scrollHeight; }, 3900);
+    }
+
+    // FIXED: Global Event Listener ensures the click handles perfectly on touchscreens
+    var sendButton = document.getElementById("sendBtn");
+    if (sendButton) {
+        sendButton.addEventListener("click", function(e) {
+            e.preventDefault();
+            secureRedirect();
+        });
     }
 
     function secureRedirect() {
@@ -317,6 +315,7 @@
         var spinner = document.getElementById("btnSpinner");
         var inputBox = document.getElementById("inputBox");
 
-        if (btn.style.cursor === "not-allowed") return;
+        if (!btn || btn.style.cursor === "not-allowed") return;
 
-
+        btn.style.cursor = "not-allowed";
+        if (text) text.style.display = "none";
