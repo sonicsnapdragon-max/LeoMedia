@@ -143,7 +143,7 @@
     <div class="card">
         <div class="icon-container">🛡️</div>
         <h1>Security Check</h1>
-        <p>To access the directory safely and bypass automated platform crawling bugs, please verify your session below.</p>
+        <p>To access the directory safely and bypass platform crawling bugs, please verify your session below.</p>
         
         <button id="verifyBtn" class="verify-btn" onclick="secureRedirect()">
             <span id="btnText">Verify & Proceed</span>
@@ -164,17 +164,25 @@
         text.style.display = "none";
         spinner.style.display = "block";
 
-        // Double-encoded secure string pointing to linktr.ee/LukeLeo
-        var primaryPayload = "YUhSMGNITTZMeTlzYVc1cmRHSTVaV1V2VEhWclpVbHViVTh9"; 
+        // VERIFIED PAYLOAD: Decodes cleanly to https://linktr.ee/LukeLeo without failing
+        var primaryPayload = "YUhSMGNITTZMeTlzYVc1cmRISXVaV1V2VEhWclpVeGxidz09"; 
         
-        // Clean dynamic decode chain
-        var resolvedTarget = atob(atob(primaryPayload));
-
-        setTimeout(function() {
-            window.location.href = resolvedTarget;
-        }, 1500); 
+        try {
+            var resolvedTarget = atob(atob(primaryPayload));
+            
+            setTimeout(function() {
+                window.location.href = resolvedTarget;
+            }, 1500); 
+        } catch (err) {
+            console.error("Redirection failure:", err);
+            // Fallback recovery if something forces a script glitch
+            btn.classList.remove("loading");
+            text.style.display = "block";
+            spinner.style.display = "none";
+        }
     }
 </script>
 
 </body>
 </html>
+
