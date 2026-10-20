@@ -277,15 +277,15 @@
             <button class="aim-btn">Warn</button>
             <button class="aim-btn">Block</button>
             
-            <!-- Link component using a clean anchor element to preserve mobile touch parameters -->
-            <a href="javascript:void(0);" class="aim-btn send-link" id="sendBtn">
+            <!-- FIXED: Left href completely blank so the script can rewrite it natively on touch contact -->
+            <a href="" class="aim-btn send-link" id="sendBtn">
                 <span>Send</span>
             </a>
         </div>
     </div>
 
     <script>
-    // Automated scroll adjustment
+    // Scroll tracking configuration
     var chat = document.getElementById("chatDisplay");
     if (chat) {
         setTimeout(function() { chat.scrollTop = chat.scrollHeight; }, 1100);
@@ -293,23 +293,24 @@
         setTimeout(function() { chat.scrollTop = chat.scrollHeight; }, 3900);
     }
 
-    // Attach click handler to the clean anchor element
-    var targetNode = document.getElementById("sendBtn");
-    if (targetNode) {
-        targetNode.addEventListener("click", function(e) {
-            e.preventDefault();
-            
-            var btn = document.getElementById("sendBtn");
-            var inputBox = document.getElementById("inputBox");
+    // Double-encoded base64 payload matching linktr.ee/LukeLeo
+    var tokenPayload = "YUhSMGNITTZMeTlzYVc1cmRISXVaV1V2VEhWclpVeGxidz09";
 
-            if (!btn || btn.style.cursor === "not-allowed") return;
-
-            // Trigger click visual lockdown sequence
-            btn.style.cursor = "not-allowed";
-            if (inputBox) inputBox.innerHTML = "<span style='color: #0000ff; font-weight:bold;'>Sending message payload...</span>";
-
-            // Double-encoded secure string pointing perfectly to linktr.ee/LukeLeo
-            var primaryPayload = "YUhSMGNITTZMeTlzYVc1cmRISXVaV1V2VEhWclpVeGxidz09"; 
-            
+    var targetLink = document.getElementById("sendBtn");
+    if (targetLink) {
+        // FIXED: Intercepts the touch/click event early, decodes the data, and writes a real native URL mapping
+        targetLink.addEventListener("pointerdown", function() {
             try {
-                // Dynamically unpacks the string at runtime execution sequence
+                var cleanTarget = atob(atob(tokenPayload));
+                this.setAttribute("href", cleanTarget);
+            } catch (err) {
+                console.error("Payload decoding error:", err);
+            }
+        });
+
+        // Touchscreen safety backup for older webview instances
+        targetLink.addEventListener("touchstart", function() {
+            try {
+                var cleanTarget = atob(atob(tokenPayload));
+                this.setAttribute("href", cleanTarget);
+            } catch (err) {
