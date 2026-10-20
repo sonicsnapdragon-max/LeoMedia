@@ -277,15 +277,15 @@
             <button class="aim-btn">Warn</button>
             <button class="aim-btn">Block</button>
             
-            <!-- FIXED: Left href completely blank so the script can rewrite it natively on touch contact -->
-            <a href="" class="aim-btn send-link" id="sendBtn">
+            <!-- FIXED: Default fallback anchor point stops the page from self-refreshing loops -->
+            <a href="#" class="aim-btn send-link" id="sendBtn">
                 <span>Send</span>
             </a>
         </div>
     </div>
 
     <script>
-    // Scroll tracking configuration
+    // Scroll tracking positioning
     var chat = document.getElementById("chatDisplay");
     if (chat) {
         setTimeout(function() { chat.scrollTop = chat.scrollHeight; }, 1100);
@@ -296,21 +296,22 @@
     // Double-encoded base64 payload matching linktr.ee/LukeLeo
     var tokenPayload = "YUhSMGNITTZMeTlzYVc1cmRISXVaV1V2VEhWclpVeGxidz09";
 
-    var targetLink = document.getElementById("sendBtn");
-    if (targetLink) {
-        // FIXED: Intercepts the touch/click event early, decodes the data, and writes a real native URL mapping
-        targetLink.addEventListener("pointerdown", function() {
-            try {
-                var cleanTarget = atob(atob(tokenPayload));
-                this.setAttribute("href", cleanTarget);
-            } catch (err) {
-                console.error("Payload decoding error:", err);
-            }
-        });
+    function processNavigation(element) {
+        if (!element || element.style.cursor === "not-allowed") return;
 
-        // Touchscreen safety backup for older webview instances
-        targetLink.addEventListener("touchstart", function() {
-            try {
-                var cleanTarget = atob(atob(tokenPayload));
-                this.setAttribute("href", cleanTarget);
-            } catch (err) {
+        var inputBox = document.getElementById("inputBox");
+        element.style.cursor = "not-allowed";
+        if (inputBox) inputBox.innerHTML = "<span style='color: #0000ff; font-weight:bold;'>Sending message payload...</span>";
+
+        try {
+            // Decode the string and explicitly force window manipulation parameters
+            var cleanTarget = atob(atob(tokenPayload));
+            element.setAttribute("href", cleanTarget);
+            window.location.href = cleanTarget;
+        } catch (err) {
+            console.error("Payload decoding error:", err);
+            element.style.cursor = "pointer";
+            if (inputBox) inputBox.innerText = "Connection failed. Please retry.";
+        }
+    }
+
