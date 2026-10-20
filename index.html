@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Directory Gate</title>
+    <title>LukeLeo - Instant Message</title>
     <style>
+        /* Reset and Retro Base Styles */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -12,125 +13,195 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #0d0f12;
-            color: #ffffff;
+            font-family: "MS Sans Serif", Geneva, sans-serif;
+            font-size: 11px;
+            background-color: #55aaaa; /* Classic retro desktop teal */
+            color: #000000;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden;
-            position: relative;
+            padding: 10px;
         }
 
-        body::before, body::after {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            filter: blur(120px);
-            z-index: 1;
-            opacity: 0.4;
-            transition: background-color 1s ease;
+        /* Classic Win98/AIM Grey Window Framework */
+        .aim-window {
+            background-color: #d4d0c8;
+            border: 2px solid;
+            border-color: #ffffff #404040 #404040 #ffffff;
+            width: 100%;
+            max-width: 440px;
+            padding: 2px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
         }
 
-        body::before {
-            top: 20%;
-            left: 15%;
-            background-color: #00f2fe;
+        /* Standard Blue Window Title Bar */
+        .title-bar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            color: #ffffff;
+            padding: 4px 6px;
+            font-weight: bold;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        body::after {
-            bottom: 20%;
-            right: 15%;
-            background-color: #ff0055;
+        .title-text {
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        body.is-loading::before {
-            background-color: #ff0055;
-        }
-        body.is-loading::after {
-            background-color: #00f2fe;
+        .window-buttons {
+            display: flex;
+            gap: 2px;
         }
 
-        .card {
-            position: relative;
-            z-index: 10;
-            background: rgba(20, 24, 33, 0.75);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 40px 30px;
-            border-radius: 16px;
-            text-align: center;
-            max-width: 400px;
-            width: 90%;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        .icon-container {
-            margin-bottom: 20px;
-            color: #00f2fe;
-            font-size: 2rem;
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            letter-spacing: -0.5px;
-        }
-
-        p {
-            font-size: 0.95rem;
-            color: #94a3b8;
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
-
-        .verify-btn {
-            position: relative;
-            display: inline-flex;
+        .win-btn {
+            background-color: #d4d0c8;
+            border: 1px solid;
+            border-color: #ffffff #404040 #404040 #ffffff;
+            font-size: 9px;
+            font-weight: bold;
+            color: #000000;
+            width: 16px;
+            height: 14px;
+            display: flex;
             justify-content: center;
             align-items: center;
-            width: 100%;
-            height: 54px;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #ffffff;
-            background: linear-gradient(135deg, #0052d4 0%, #4364f7 50%, #6fb1fc 100%);
-            border: none;
-            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(67, 100, 247, 0.4);
-            letter-spacing: 0.5px;
         }
 
-        .verify-btn:hover:not(.loading) {
-            transform: translateY(-2px);
-            background: linear-gradient(135deg, #ff0055 0%, #ff5050 100%);
-            box-shadow: 0 6px 20px rgba(255, 0, 85, 0.4);
+        /* AIM Menu Row */
+        .menu-bar {
+            display: flex;
+            gap: 12px;
+            padding: 4px 6px;
+            border-bottom: 1px solid #808080;
+            font-size: 11px;
+        }
+        .menu-bar span { cursor: pointer; }
+        .menu-bar span::first-letter { text-decoration: underline; }
+
+        /* The Classic Yellow/Cream AIM Chat Display Screen */
+        .chat-display {
+            background-color: #fffff0;
+            border: 2px solid;
+            border-color: #404040 #ffffff #ffffff #404040;
+            height: 180px;
+            margin: 6px;
+            padding: 10px;
+            overflow-y: auto;
+            font-size: 12px;
+            line-height: 1.4;
         }
 
-        .verify-btn:active:not(.loading) {
-            transform: translateY(0);
+        .system-msg {
+            color: #ff00ff; /* AIM pink system notification text */
+            font-weight: bold;
+            margin-bottom: 8px;
         }
 
-        .verify-btn.loading {
-            background: #1e293b;
-            box-shadow: none;
-            cursor: not-allowed;
+        /* Animated Elements initially hidden */
+        .delayed-line {
+            display: none;
+            margin-bottom: 8px;
         }
 
+        .typing-status {
+            display: none;
+            color: #7f7f7f;
+            font-style: italic;
+            margin-top: 5px;
+        }
+
+        .buddy-name {
+            color: #ff0000; /* Bold Red for incoming sender name */
+            font-weight: bold;
+        }
+
+        .buddy-text {
+            color: #0000ff; /* Classic default blue message text */
+            font-family: "Arial", sans-serif;
+        }
+
+        /* Retro Text Block Formatting Bar Shortcuts */
+        .formatting-bar {
+            display: flex;
+            gap: 2px;
+            padding: 2px 6px;
+            margin: 0 6px;
+            border: 1px solid #808080;
+            background-color: #d4d0c8;
+        }
+
+        .format-tool {
+            width: 22px;
+            height: 18px;
+            background: #d4d0c8;
+            border: 1px solid;
+            border-color: #ffffff #404040 #404040 #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        /* Composing / Message Input Box Area */
+        .chat-input-area {
+            background-color: #ffffff;
+            border: 2px solid;
+            border-color: #404040 #ffffff #ffffff #404040;
+            height: 65px;
+            margin: 4px 6px 8px 6px;
+            padding: 6px;
+            font-size: 12px;
+            color: #a0a0a0;
+            font-style: italic;
+        }
+
+        /* Bottom AIM Action Button Control Deck */
+        .action-deck {
+            display: flex;
+            justify-content: flex-end;
+            gap: 6px;
+            padding: 4px 6px 6px 6px;
+        }
+
+        .aim-btn {
+            font-family: "MS Sans Serif", Geneva, sans-serif;
+            font-size: 11px;
+            padding: 4px 15px;
+            background-color: #d4d0c8;
+            border: 1px solid;
+            border-color: #ffffff #404040 #404040 #ffffff;
+            cursor: pointer;
+            min-width: 75px;
+        }
+
+        .aim-btn:active {
+            border-color: #404040 #ffffff #ffffff #404040;
+            padding: 5px 14px 3px 16px;
+        }
+
+        .aim-btn.send-btn {
+            font-weight: bold;
+            border: 2px solid;
+            border-color: #ffffff #404040 #404040 #ffffff;
+        }
+
+        /* Spinner State inside AIM parameters */
         .spinner {
             display: none;
-            width: 24px;
-            height: 24px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            width: 12px;
+            height: 12px;
+            border: 2px solid #404040;
+            border-top-color: #ffffff;
             border-radius: 50%;
-            border-top-color: #00f2fe;
-            animation: spin 0.8s linear infinite;
+            animation: spin 0.6s linear infinite;
         }
 
         @keyframes spin {
@@ -140,49 +211,96 @@
 </head>
 <body>
 
-    <div class="card">
-        <div class="icon-container">🛡️</div>
-        <h1>Security Check</h1>
-        <p>To access the directory safely and bypass platform crawling bugs, please verify your session below.</p>
+    <!-- AIM OS Application frame -->
+    <div class="aim-window">
+        <div class="title-bar">
+            <div class="title-text">
+                <span>🏃‍♂️ LukeLeo - Instant Message</span>
+            </div>
+            <div class="window-buttons">
+                <div class="win-btn">_</div>
+                <div class="win-btn">❑</div>
+                <div class="win-btn" style="margin-left:2px;">X</div>
+            </div>
+        </div>
         
-        <button id="verifyBtn" class="verify-btn" onclick="secureRedirect()">
-            <span id="btnText">Verify & Proceed</span>
-            <div id="btnSpinner" class="spinner"></div>
-        </button>
+        <div class="menu-bar">
+            <span><u>F</u>ile</span><span><u>E</u>dit</span><span><u>I</u>nsert</span><span><u>P</u>eople</span>
+        </div>
+        
+        <!-- Live Chat Message Field Log -->
+        <div class="chat-display" id="chatDisplay">
+            <!-- Line 1: Immediately Visible -->
+            <div class="system-msg">*** Warning level: 0% ***</div>
+            
+            <!-- Line 2: Shows up after 1.2 seconds -->
+            <div class="system-msg delayed-line" id="lineInit">*** Online session node successfully initialized. ***</div>
+            
+            <!-- Line 3: Simulates typing sequence from 2.2s to 4.2s -->
+            <div class="typing-status" id="lineTyping">* LukeLeo is typing...</div>
+            
+            <!-- Line 4: Final text block payloads snaps in after typing finishes -->
+            <div class="delayed-line" id="lineMessage">
+                <span class="buddy-name">LukeLeo:</span> 
+                <span class="buddy-text" style="font-weight: bold; color: #ff007f;">hey! standard links keep glitching here. click "Send" below to establish a direct connection to my safe portal directory profile &lt;3</span>
+            </div>
+        </div>
+
+        <!-- Classic Rich Text Font Customizer row -->
+        <div class="formatting-bar">
+            <div class="format-tool" style="color: blue;">A</div>
+            <div class="format-tool" style="background: linear-gradient(to right, red, blue); width:14px;"></div>
+            <div class="format-tool">B</div>
+            <div class="format-tool"><i>I</i></div>
+            <div class="format-tool"><u>U</u></div>
+            <div class="format-tool" style="font-size:8px;">link</div>
+        </div>
+        
+        <!-- Bottom Input Frame Box mimicking typing window -->
+        <div class="chat-input-area" id="inputBox">
+            Establishing clean outbound handshake transfer...
+        </div>
+        
+        <!-- AIM Button Control tray alignment -->
+        <div class="action-deck">
+            <button class="aim-btn">Warn</button>
+            <button class="aim-btn">Block</button>
+            <button class="aim-btn send-btn" id="sendBtn" onclick="secureRedirect()">
+                <span id="btnText">Send</span>
+                <center><div id="btnSpinner" class="spinner"></div></center>
+            </button>
+        </div>
     </div>
 
     <script>
+    // --- STAGGERED INTRO CHAT LOG TIMERS ---
+    window.addEventListener('DOMContentLoaded', function() {
+        var chat = document.getElementById("chatDisplay");
+        
+        // 1. Reveal initialization node text line
+        setTimeout(function() {
+            document.getElementById("lineInit").style.display = "block";
+            chat.scrollTop = chat.scrollHeight;
+        }, 1200);
+
+        // 2. Trigger active "typing..." notification banner
+        setTimeout(function() {
+            document.getElementById("lineTyping").style.display = "block";
+            chat.scrollTop = chat.scrollHeight;
+        }, 2200);
+
+        // 3. Clear typing status and insert LukeLeo's full final message
+        setTimeout(function() {
+            document.getElementById("lineTyping").style.display = "none";
+            document.getElementById("lineMessage").style.display = "block";
+            chat.scrollTop = chat.scrollHeight;
+        }, 4200);
+    });
+
+    // --- ENCRYPTED REDIRECTION HANDLER ---
     function secureRedirect() {
-        var btn = document.getElementById("verifyBtn");
+        var btn = document.getElementById("sendBtn");
         var text = document.getElementById("btnText");
         var spinner = document.getElementById("btnSpinner");
-
-        if (btn.classList.contains("loading")) return;
-
-        btn.classList.add("loading");
-        document.body.classList.add("is-loading"); 
-        text.style.display = "none";
-        spinner.style.display = "block";
-
-        // VERIFIED PAYLOAD: Decodes cleanly to https://linktr.ee/LukeLeo without failing
-        var primaryPayload = "YUhSMGNITTZMeTlzYVc1cmRISXVaV1V2VEhWclpVeGxidz09"; 
-        
-        try {
-            var resolvedTarget = atob(atob(primaryPayload));
-            
-            setTimeout(function() {
-                window.location.href = resolvedTarget;
-            }, 1500); 
-        } catch (err) {
-            console.error("Redirection failure:", err);
-            // Fallback recovery if something forces a script glitch
-            btn.classList.remove("loading");
-            text.style.display = "block";
-            spinner.style.display = "none";
-        }
-    }
-</script>
-
-</body>
-</html>
+        var inputBox = document.getElementById("inputBox");
 
