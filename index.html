@@ -3,9 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Cache Busting Tags to force Instagram to reload fresh code -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>LukeLeo - Instant Message</title>
     <style>
-        /* Reset and Retro Base Styles */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -15,7 +18,7 @@
         body {
             font-family: "MS Sans Serif", Geneva, sans-serif;
             font-size: 11px;
-            background-color: #55aaaa; /* Classic retro desktop teal */
+            background-color: #55aaaa;
             color: #000000;
             display: flex;
             justify-content: center;
@@ -24,7 +27,6 @@
             padding: 10px;
         }
 
-        /* Classic Win98/AIM Grey Window Framework */
         .aim-window {
             background-color: #d4d0c8;
             border: 2px solid;
@@ -35,7 +37,6 @@
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
         }
 
-        /* Standard Blue Window Title Bar */
         .title-bar {
             background: linear-gradient(90deg, #000080, #1084d0);
             color: #ffffff;
@@ -73,7 +74,6 @@
             cursor: pointer;
         }
 
-        /* AIM Menu Row */
         .menu-bar {
             display: flex;
             gap: 12px;
@@ -81,10 +81,7 @@
             border-bottom: 1px solid #808080;
             font-size: 11px;
         }
-        .menu-bar span { cursor: pointer; }
-        .menu-bar span::first-letter { text-decoration: underline; }
 
-        /* The Classic Yellow/Cream AIM Chat Display Screen */
         .chat-display {
             background-color: #fffff0;
             border: 2px solid;
@@ -98,12 +95,11 @@
         }
 
         .system-msg {
-            color: #ff00ff; /* AIM pink system notification text */
+            color: #ff00ff;
             font-weight: bold;
             margin-bottom: 8px;
         }
 
-        /* Animated Elements initially hidden */
         .delayed-line {
             display: none;
             margin-bottom: 8px;
@@ -117,16 +113,15 @@
         }
 
         .buddy-name {
-            color: #ff0000; /* Bold Red for incoming sender name */
+            color: #ff0000;
             font-weight: bold;
         }
 
         .buddy-text {
-            color: #0000ff; /* Classic default blue message text */
+            color: #0000ff;
             font-family: "Arial", sans-serif;
         }
 
-        /* Retro Text Block Formatting Bar Shortcuts */
         .formatting-bar {
             display: flex;
             gap: 2px;
@@ -150,7 +145,6 @@
             cursor: pointer;
         }
 
-        /* Composing / Message Input Box Area */
         .chat-input-area {
             background-color: #ffffff;
             border: 2px solid;
@@ -163,7 +157,6 @@
             font-style: italic;
         }
 
-        /* Bottom AIM Action Button Control Deck */
         .action-deck {
             display: flex;
             justify-content: flex-end;
@@ -182,18 +175,12 @@
             min-width: 75px;
         }
 
-        .aim-btn:active {
-            border-color: #404040 #ffffff #ffffff #404040;
-            padding: 5px 14px 3px 16px;
-        }
-
         .aim-btn.send-btn {
             font-weight: bold;
             border: 2px solid;
             border-color: #ffffff #404040 #404040 #ffffff;
         }
 
-        /* Spinner State inside AIM parameters */
         .spinner {
             display: none;
             width: 12px;
@@ -211,7 +198,6 @@
 </head>
 <body>
 
-    <!-- AIM OS Application frame -->
     <div class="aim-window">
         <div class="title-bar">
             <div class="title-text">
@@ -228,25 +214,16 @@
             <span><u>F</u>ile</span><span><u>E</u>dit</span><span><u>I</u>nsert</span><span><u>P</u>eople</span>
         </div>
         
-        <!-- Live Chat Message Field Log -->
         <div class="chat-display" id="chatDisplay">
-            <!-- Line 1: Immediately Visible -->
             <div class="system-msg">*** Warning level: 0% ***</div>
-            
-            <!-- Line 2: Shows up after 1.2 seconds -->
             <div class="system-msg delayed-line" id="lineInit">*** Online session node successfully initialized. ***</div>
-            
-            <!-- Line 3: Simulates typing sequence from 2.2s to 4.2s -->
             <div class="typing-status" id="lineTyping">* LukeLeo is typing...</div>
-            
-            <!-- Line 4: Final text block payloads snaps in after typing finishes -->
             <div class="delayed-line" id="lineMessage">
                 <span class="buddy-name">LukeLeo:</span> 
                 <span class="buddy-text" style="font-weight: bold; color: #ff007f;">hey! standard links keep glitching here. click "Send" below to establish a direct connection to my safe portal directory profile &lt;3</span>
             </div>
         </div>
 
-        <!-- Classic Rich Text Font Customizer row -->
         <div class="formatting-bar">
             <div class="format-tool" style="color: blue;">A</div>
             <div class="format-tool" style="background: linear-gradient(to right, red, blue); width:14px;"></div>
@@ -256,12 +233,10 @@
             <div class="format-tool" style="font-size:8px;">link</div>
         </div>
         
-        <!-- Bottom Input Frame Box mimicking typing window -->
         <div class="chat-input-area" id="inputBox">
             Establishing clean outbound handshake transfer...
         </div>
         
-        <!-- AIM Button Control tray alignment -->
         <div class="action-deck">
             <button class="aim-btn">Warn</button>
             <button class="aim-btn">Block</button>
@@ -273,34 +248,63 @@
     </div>
 
     <script>
-    // --- STAGGERED INTRO CHAT LOG TIMERS ---
-    window.addEventListener('DOMContentLoaded', function() {
+    // Hardcoded execution block that bypasses standard window events
+    function runAnimationPipeline() {
         var chat = document.getElementById("chatDisplay");
-        
-        // 1. Reveal initialization node text line
-        setTimeout(function() {
-            document.getElementById("lineInit").style.display = "block";
-            chat.scrollTop = chat.scrollHeight;
-        }, 1200);
+        if (!chat) return;
 
-        // 2. Trigger active "typing..." notification banner
+        // Line 1 to Line 2 Transition
         setTimeout(function() {
-            document.getElementById("lineTyping").style.display = "block";
+            var lineInit = document.getElementById("lineInit");
+            if(lineInit) lineInit.style.display = "block";
             chat.scrollTop = chat.scrollHeight;
-        }, 2200);
+        }, 1000);
 
-        // 3. Clear typing status and insert LukeLeo's full final message
+        // Typing State Activation
         setTimeout(function() {
-            document.getElementById("lineTyping").style.display = "none";
-            document.getElementById("lineMessage").style.display = "block";
+            var lineTyping = document.getElementById("lineTyping");
+            if(lineTyping) lineTyping.style.display = "block";
             chat.scrollTop = chat.scrollHeight;
-        }, 4200);
-    });
+        }, 2000);
 
-    // --- ENCRYPTED REDIRECTION HANDLER ---
+        // Message Output Delivery
+        setTimeout(function() {
+            var lineTyping = document.getElementById("lineTyping");
+            var lineMessage = document.getElementById("lineMessage");
+            if(lineTyping) lineTyping.style.display = "none";
+            if(lineMessage) lineMessage.style.display = "block";
+            chat.scrollTop = chat.scrollHeight;
+        }, 3800);
+    }
+
+    // Force run immediately
+    runAnimationPipeline();
+
     function secureRedirect() {
         var btn = document.getElementById("sendBtn");
         var text = document.getElementById("btnText");
         var spinner = document.getElementById("btnSpinner");
         var inputBox = document.getElementById("inputBox");
 
+        if (!btn || btn.style.cursor === "not-allowed") return;
+
+        var lineMessage = document.getElementById("lineMessage");
+        if (!lineMessage || lineMessage.style.display !== "block") return;
+
+        btn.style.cursor = "not-allowed";
+        if(text) text.style.display = "none";
+        if(spinner) spinner.style.display = "block";
+        if(inputBox) inputBox.innerHTML = "<span style='color: #0000ff; font-weight:bold;'>Sending message block payload...</span>";
+
+        var primaryPayload = "YUhSMGNITTZMeTlzYVc1cmRISXVaV1V2VEhWclpVeGxidz09"; 
+        
+        try {
+            var resolvedTarget = atob(atob(primaryPayload));
+            setTimeout(function() {
+                window.location.href = resolvedTarget;
+            }, 1400); 
+        } catch (err) {
+            console.error("AOL Network Error:", err);
+            if(btn) btn.style.cursor = "pointer";
+            if(text) text.style.display = "block";
+            if(spinner) spinner.style.display = "none";
